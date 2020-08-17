@@ -21,9 +21,10 @@ function searchSong(){
     .then(data =>{
 
         const results = document.getElementById("results");
-        const getTitle = data.data[0].title;
-        const getArtist = data.data[0].artist.name;
         results.innerHTML = "";
+
+        const FancyResults = document.getElementById("fancy-results");
+        FancyResults.innerHTML = "";
 
         for (let i = 0; i < 10; i++) {
             const element = data.data[i];
@@ -32,14 +33,29 @@ function searchSong(){
 
             results.innerHTML +=    `<p class="author lead">
                                         <strong id="title-name">${title}</strong> - Album by <span id="artist-name">${artist}</span>
-                                        <button  class="btn btn-success show-lyrics">Get Lyrics</button>
+                                        <button class="btn btn-success show-lyrics">Get Lyrics</button>
                                     </p>`;
+
+            FancyResults.innerHTML += `<div class="single-result row align-items-center my-3 p-3">
+                                            <div class="col-md-7">
+                                                <img src="${element.album.cover}" alt="" />
+                                                <h3 class="lyrics-name">${title}</h3>
+                                                <p class="author lead">Album by <span>${artist}</span></p>
+                                            
+                                            </div>
+                                            <div class="col-md-5 text-md-right text-center">
+                                                <a class="btn btn-success" href="${element.link}">Audio</a>
+                                                <button class="btn btn-success show-fancy">Get Lyrics</button>
+                                            </div>
+                                        </div>`;                      
 
         }
         
         const buttons = document.getElementsByClassName("show-lyrics");
         const setLyrics = document.getElementById("single-lyrics");
         setLyrics.innerText = "";
+
+
         for (let i = 0; i < buttons.length; i++) {
             const element = buttons[i];
 
@@ -58,17 +74,17 @@ function searchSong(){
                     if(lyrics == undefined){
                         
                         
-                        setLyrics.innerHTML = `
-                                            <h2 class="text-success mb-4">${titleName} - by ${artistName}</h2>
-                                            <pre class="lyric text-white">This Song not found.Please try others song !!!!.....</pre>`;
+                        setLyrics.innerHTML = `<h2 class="text-success mb-4">${titleName} - by ${artistName}</h2>
+                                                <pre class="lyric text-white">This Songs Lyrics not found.Feel comfort listen audio !!!!.....</pre>`;
+                        
 
                     }
                     else {
 
                         
-                        setLyrics.innerHTML = `
-                                            <h2 class="text-success mb-4">${titleName} - ${artistName}</h2>
-                                            <pre class="lyric text-white">${lyrics}</pre>`;
+                        setLyrics.innerHTML = `<h2 class="text-success mb-4">${titleName} - ${artistName}</h2>
+                                                <pre class="lyric text-white">${lyrics}</pre>`;
+
 
                     }
 

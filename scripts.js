@@ -1,4 +1,15 @@
-document.getElementById("search").addEventListener("click", function(){
+document.getElementById("search").addEventListener("click", searchSong);
+
+
+document.getElementById('song-name').addEventListener("keypress", function(){
+
+    if(event.keyCode == 13){
+        searchSong();
+    }
+})
+
+
+function searchSong(){
 
     const songName = document.getElementById("song-name").value;
 
@@ -12,7 +23,7 @@ document.getElementById("search").addEventListener("click", function(){
         const results = document.getElementById("results");
         const getTitle = data.data[0].title;
         const getArtist = data.data[0].artist.name;
-    
+        results.innerHTML = "";
         for (let i = 0; i < 10; i++) {
             const element = data.data[i];
             const title = element.title;
@@ -32,29 +43,29 @@ document.getElementById("search").addEventListener("click", function(){
 
             element.addEventListener("click", function(event){
 
-                const getThisTitle = this.parentNode.childNodes[1].innerHTML;
-                const getThisArtist = this.parentNode.childNodes[3].innerHTML;
+                const titleName = this.parentNode.childNodes[1].innerHTML;
+                const artistName = this.parentNode.childNodes[3].innerHTML;
 
-                const secondUrl = `https://api.lyrics.ovh/v1/${getThisArtist}/${getThisTitle}`;
+                const secondUrl = `https://api.lyrics.ovh/v1/${artistName}/${titleName}`;
 
                 fetch(secondUrl)
                 .then(secondRes => secondRes.json())
-                .then(secondData => {
+                .then(lyricsData => {
 
-                    const lyrics = secondData.lyrics;
+                    const lyrics = lyricsData.lyrics;
                     if(lyrics == undefined){
                         
                         const setLyrics = document.getElementById("single-lyrics");
                         setLyrics.innerHTML = `
-                                            <h2 class="text-success mb-4">${getThisTitle}- ${getThisArtist}</h2>
-                                            <pre class="lyric text-white">This Song not found. Try others song !!!!.....</pre>`;
+                                            <h2 class="text-success mb-4">${titleName} - by ${artistName}</h2>
+                                            <pre class="lyric text-white">This Song not found.Please try others song !!!!.....</pre>`;
 
                     }
                     else {
 
                         const setLyrics = document.getElementById("single-lyrics");
                         setLyrics.innerHTML = `
-                                            <h2 class="text-success mb-4">${getThisTitle}- ${getThisArtist}</h2>
+                                            <h2 class="text-success mb-4">${titleName} - ${artistName}</h2>
                                             <pre class="lyric text-white">${lyrics}</pre>`;
 
                     }
@@ -69,13 +80,12 @@ document.getElementById("search").addEventListener("click", function(){
         
         // <button class="btn go-back">&lsaquo;</button>
         // event.preventDefault();
+
         document.getElementById("song-name").value = "";
     
     })
 
-});
-
-
+}
 
 
 

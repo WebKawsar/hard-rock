@@ -24,6 +24,7 @@ function searchSong(){
         const getTitle = data.data[0].title;
         const getArtist = data.data[0].artist.name;
         results.innerHTML = "";
+
         for (let i = 0; i < 10; i++) {
             const element = data.data[i];
             const title = element.title;
@@ -37,7 +38,8 @@ function searchSong(){
         }
         
         const buttons = document.getElementsByClassName("show-lyrics");
-        
+        const setLyrics = document.getElementById("single-lyrics");
+        setLyrics.innerText = "";
         for (let i = 0; i < buttons.length; i++) {
             const element = buttons[i];
 
@@ -55,7 +57,7 @@ function searchSong(){
                     const lyrics = lyricsData.lyrics;
                     if(lyrics == undefined){
                         
-                        const setLyrics = document.getElementById("single-lyrics");
+                        
                         setLyrics.innerHTML = `
                                             <h2 class="text-success mb-4">${titleName} - by ${artistName}</h2>
                                             <pre class="lyric text-white">This Song not found.Please try others song !!!!.....</pre>`;
@@ -63,7 +65,7 @@ function searchSong(){
                     }
                     else {
 
-                        const setLyrics = document.getElementById("single-lyrics");
+                        
                         setLyrics.innerHTML = `
                                             <h2 class="text-success mb-4">${titleName} - ${artistName}</h2>
                                             <pre class="lyric text-white">${lyrics}</pre>`;
